@@ -3,6 +3,7 @@ package com.openclassrooms.chatop.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "rentals")
@@ -17,14 +18,19 @@ public class Rental {
     private String picture;
     private String description;
 
-    @Column(name = "owner_id")
-    private Integer ownerId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+
+    @OneToMany(mappedBy = "rental")
+    private List<Message> messages;
+
 
     public Long getId() {
         return id;
@@ -74,12 +80,12 @@ public class Rental {
         this.description = description;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public LocalDate getCreatedAt() {

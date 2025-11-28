@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class RentalController {
@@ -31,7 +29,7 @@ public class RentalController {
     }
 
     @PutMapping("api/rentals/{id}")
-    public Rental updateRental(@PathVariable Long id, @ModelAttribute Rental rental) {
+    public Rental updateRental(@PathVariable Long id, @RequestBody Rental rental) {
         return rentalService.updateRental(id, rental);
     }
 }
