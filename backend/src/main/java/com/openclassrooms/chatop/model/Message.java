@@ -3,30 +3,29 @@ package com.openclassrooms.chatop.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "messages")
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
-    private String name;
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "rental_id", referencedColumnName = "id")
+    private Rental rental;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    private String message;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
-
-    @OneToMany(mappedBy = "owner")
-    private List<Rental> rentals;
-
-    @OneToMany(mappedBy = "user")
-    private List<Message> messages;
 
     public Long getId() {
         return id;
@@ -36,28 +35,28 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public Rental getRental() {
+        return rental;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRental(Rental rental) {
+        this.rental = rental;
     }
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public LocalDate getCreatedAt() {

@@ -3,6 +3,7 @@ package com.openclassrooms.chatop.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "rentals")
@@ -26,6 +27,10 @@ public class Rental {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+
+    @OneToMany(mappedBy = "rental")
+    private List<Message> messages;
+
 
     public Long getId() {
         return id;
