@@ -2,6 +2,7 @@ package com.openclassrooms.chatop.service;
 
 import com.openclassrooms.chatop.DTO.RentalRequest;
 import com.openclassrooms.chatop.model.Rental;
+import com.openclassrooms.chatop.model.User;
 import com.openclassrooms.chatop.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class RentalService {
     private RentalRepository rentalRepository;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private UserService userService;
 
     public Iterable<Rental> getRentals() {
         return rentalRepository.findAll();
@@ -28,8 +31,9 @@ public class RentalService {
     public Rental createRental(RentalRequest request) throws IOException {
         String picturePath = fileService.save(request.getPicture());
         Rental rental = new Rental();
+        User currentUser = userService.getCurrentUser();
 
-        rental.setOwnerId(1);
+        rental.setOwner(currentUser);
         rental.setName(request.getName());
         rental.setSurface(request.getSurface());
         rental.setPrice(request.getPrice());

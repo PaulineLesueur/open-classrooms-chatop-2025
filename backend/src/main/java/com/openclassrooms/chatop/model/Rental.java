@@ -17,8 +17,9 @@ public class Rental {
     private String picture;
     private String description;
 
-    @Column(name = "owner_id")
-    private Integer ownerId;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -74,12 +75,12 @@ public class Rental {
         this.description = description;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public LocalDate getCreatedAt() {
