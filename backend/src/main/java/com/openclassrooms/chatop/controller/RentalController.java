@@ -21,12 +21,17 @@ public class RentalController {
     }
 
     @GetMapping("/api/rentals/{id}")
-    public Optional<Rental> getRentalById(@PathVariable Long id) {
+    public Rental getRentalById(@PathVariable Long id) {
         return rentalService.getRentalById(id);
     }
 
     @PostMapping(value = "/api/rentals/{id}", consumes = "multipart/form-data")
     public Rental createRental(@ModelAttribute RentalRequest request) throws IOException {
         return rentalService.createRental(request);
+    }
+
+    @PutMapping("api/rentals/{id}")
+    public Rental updateRental(@PathVariable Long id, @ModelAttribute Rental rental) {
+        return rentalService.updateRental(id, rental);
     }
 }

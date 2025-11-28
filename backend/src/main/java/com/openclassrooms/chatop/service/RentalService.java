@@ -3,13 +3,11 @@ package com.openclassrooms.chatop.service;
 import com.openclassrooms.chatop.DTO.RentalRequest;
 import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.repository.RentalRepository;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class RentalService {
@@ -22,8 +20,9 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
-    public Optional<Rental> getRentalById(final Long id) {
-        return rentalRepository.findById(id);
+    public Rental getRentalById(final Long id) {
+        return rentalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rental not found"));
     }
 
     public Rental createRental(RentalRequest request) throws IOException {
@@ -37,6 +36,19 @@ public class RentalService {
         rental.setPicture(picturePath);
         rental.setDescription(request.getDescription());
         rental.setCreatedAt(LocalDate.now());
+
+        return rentalRepository.save(rental);
+    }
+
+    public Rental updateRental(Long id, Rental updatedRental) {
+        Rental rental = rentalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rental not found"));
+
+        rental.setName(updatedRental.getName());
+        rental.setPrice(updatedRental.getPrice());
+        rental.setSurface(updatedRental.getSurface());
+        rental.setDescription(updatedRental.getDescription());
+        rental.setUpdatedAt(LocalDate.now());
 
         return rentalRepository.save(rental);
     }
