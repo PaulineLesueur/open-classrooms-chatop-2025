@@ -1,6 +1,7 @@
 package com.openclassrooms.chatop.service;
 
 import com.openclassrooms.chatop.DTO.MessageRequest;
+import com.openclassrooms.chatop.DTO.MessageResponse;
 import com.openclassrooms.chatop.model.Message;
 import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.model.User;
@@ -22,7 +23,18 @@ public class MessageService {
     @Autowired
     private UserService userService;
 
-    public Message createMessage(MessageRequest request) {
+    private MessageResponse convertToMessageResponse(Message message) {
+        MessageResponse dto = new MessageResponse();
+        dto.setId(message.getId());
+        dto.setRentalId(message.getRental().getId());
+        dto.setUserId(message.getUser().getId());
+        dto.setMessage(message.getMessage());
+        dto.setCreatedAt(message.getCreatedAt());
+        dto.setUpdatedAt(message.getUpdatedAt());
+        return dto;
+    }
+
+    public MessageResponse createMessage(MessageRequest request) {
         Message message = new Message();
         User user = userService.getCurrentUser();
         Rental rental = rentalRepository.findById(request.getRentalId())
@@ -33,6 +45,8 @@ public class MessageService {
         message.setMessage(request.getMessage());
         message.setCreatedAt(LocalDate.now());
 
-        return messageRepository.save(message);
+        Message savedMessage = messageRepository.save(message);
+
+        return convertToMessageResponse(message);
     }
 }
