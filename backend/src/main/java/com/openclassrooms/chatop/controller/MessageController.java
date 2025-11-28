@@ -1,6 +1,7 @@
 package com.openclassrooms.chatop.controller;
 
 import com.openclassrooms.chatop.DTO.MessageRequest;
+import com.openclassrooms.chatop.DTO.MessageResponse;
 import com.openclassrooms.chatop.model.Message;
 import com.openclassrooms.chatop.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class MessageController {
     private MessageService messageService;
 
     @PostMapping("/api/messages")
-    public Message createMessage(@RequestBody MessageRequest request) {
+    public MessageResponse createMessage(@RequestBody MessageRequest request) {
         return messageService.createMessage(request);
     }
 }

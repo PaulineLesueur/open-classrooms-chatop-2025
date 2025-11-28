@@ -3,7 +3,6 @@ package com.openclassrooms.chatop.DTO;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-@Data
 public class RentalRequest {
     private String name;
     private Double surface;

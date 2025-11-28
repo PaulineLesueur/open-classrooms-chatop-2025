@@ -1,6 +1,7 @@
 package com.openclassrooms.chatop.service;
 
 import com.openclassrooms.chatop.DTO.RentalRequest;
+import com.openclassrooms.chatop.DTO.RentalResponse;
 import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.model.User;
 import com.openclassrooms.chatop.repository.RentalRepository;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RentalService {
@@ -19,16 +23,40 @@ public class RentalService {
     @Autowired
     private UserService userService;
 
-    public Iterable<Rental> getRentals() {
-        return rentalRepository.findAll();
+    private RentalResponse convertToRentalResponse(Rental rental) {
+        RentalResponse dto = new RentalResponse();
+
+        dto.setId(rental.getId());
+        dto.setName(rental.getName());
+        dto.setSurface(rental.getSurface());
+        dto.setPrice(rental.getPrice());
+        dto.setPicture("/uploads/" + rental.getPicture());
+        dto.setDescription(rental.getDescription());
+        if(rental.getOwner() != null) {
+            dto.setOwnerId(rental.getOwner().getId());
+        }
+        dto.setCreatedAt(rental.getCreatedAt());
+        dto.setUpdatedAt(rental.getUpdatedAt());
+
+        return dto;
     }
 
-    public Rental getRentalById(final Long id) {
-        return rentalRepository.findById(id)
+    public Iterable<RentalResponse> getRentals() {
+        Iterable<Rental> rentals = rentalRepository.findAll();
+        List<RentalResponse> dtoList = StreamSupport.stream(rentals.spliterator(), false)
+                .map(this::convertToRentalResponse)
+                .collect(Collectors.toList());
+
+        return dtoList;
+    }
+
+    public RentalResponse getRentalById(final Long id) {
+        Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
+        return convertToRentalResponse(rental);
     }
 
-    public Rental createRental(RentalRequest request) throws IOException {
+    public RentalResponse createRental(RentalRequest request) throws IOException {
         String picturePath = fileService.save(request.getPicture());
         Rental rental = new Rental();
         User currentUser = userService.getCurrentUser();
@@ -41,10 +69,12 @@ public class RentalService {
         rental.setDescription(request.getDescription());
         rental.setCreatedAt(LocalDate.now());
 
-        return rentalRepository.save(rental);
+        Rental savedRental = rentalRepository.save(rental);
+
+        return convertToRentalResponse(savedRental);
     }
 
-    public Rental updateRental(Long id, Rental updatedRental) {
+    public RentalResponse updateRental(Long id, RentalRequest updatedRental) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
 
@@ -54,6 +84,8 @@ public class RentalService {
         rental.setDescription(updatedRental.getDescription());
         rental.setUpdatedAt(LocalDate.now());
 
-        return rentalRepository.save(rental);
+        Rental savedRental = rentalRepository.save(rental);
+
+        return convertToRentalResponse(savedRental);
     }
 }
