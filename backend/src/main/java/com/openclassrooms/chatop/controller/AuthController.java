@@ -56,7 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "User registered"));
     }
 
-    @PostMapping("/email")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         try {
             Authentication authentication = authenticationManager.authenticate(
