@@ -15,16 +15,20 @@ public class UserDetailsImpl implements UserDetails {
     private final Long id;
     private final String email;
     private final String password;
+    private final String name;
     private final List<GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        this.name = user.getName();
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     public Long getId() { return  id; }
+
+    public String getName() { return name; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
