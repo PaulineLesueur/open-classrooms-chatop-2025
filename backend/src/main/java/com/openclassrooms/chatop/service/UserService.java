@@ -40,4 +40,11 @@ public class UserService {
         User user = getCurrentUser();
         return convertToUserResponse(user);
     }
+
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return convertToUserResponse(user);
+    }
 }
