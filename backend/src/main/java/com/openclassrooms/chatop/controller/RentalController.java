@@ -24,7 +24,7 @@ public class RentalController {
         return rentalService.getRentalById(id);
     }
 
-    @PostMapping(value = "/api/rentals/{id}", consumes = "multipart/form-data")
+    @PostMapping(value = "/api/rentals", consumes = "multipart/form-data")
     public RentalResponse createRental(@ModelAttribute RentalRequest request) throws IOException {
         return rentalService.createRental(request);
     }

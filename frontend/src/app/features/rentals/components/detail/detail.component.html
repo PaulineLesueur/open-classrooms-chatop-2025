@@ -10,7 +10,7 @@
                 </div>
             </div>
             <mat-card-subtitle class="owner">
-                <app-owner-info [ownerId]="rental.owner_id"></app-owner-info>
+                <app-owner-info [ownerId]="rental.ownerId"></app-owner-info>
             </mat-card-subtitle>
         </mat-card-title>
         <mat-card-content>
@@ -36,8 +36,8 @@
                 {{ rental.description }}
             </div>
             <div class="date" class="my2" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="created"><i>Create at: </i> {{ rental.created_at| date: 'longDate'}}</div>
-                <div class="updated"><i>Last update: </i> {{ rental.updated_at| date: 'longDate'}}</div>
+                <div class="created"><i>Create at: </i> {{ rental.createdAt| date: 'longDate'}}</div>
+                <div class="updated"><i>Last update: </i> {{ rental.updatedAt| date: 'longDate'}}</div>
             </div>
         </mat-card-content>
     </mat-card>

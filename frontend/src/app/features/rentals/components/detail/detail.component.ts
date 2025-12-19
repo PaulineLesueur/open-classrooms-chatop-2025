@@ -43,8 +43,7 @@ export class DetailComponent implements OnInit {
 
   public sendMessage(): void {
     const message = {
-      rental_id: this.rental!.id,
-      user_id: this.sessionService.user?.id,
+      rentalId: this.rental!.id,
       message: this.messageForm.value.message
     } as MessageRequest;
 

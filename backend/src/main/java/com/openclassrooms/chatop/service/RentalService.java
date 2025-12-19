@@ -30,7 +30,7 @@ public class RentalService {
         dto.setName(rental.getName());
         dto.setSurface(rental.getSurface());
         dto.setPrice(rental.getPrice());
-        dto.setPicture("/uploads/" + rental.getPicture());
+        dto.setPicture("http://localhost:3001/uploads/" + rental.getPicture());
         dto.setDescription(rental.getDescription());
         if(rental.getOwner() != null) {
             dto.setOwnerId(rental.getOwner().getId());
