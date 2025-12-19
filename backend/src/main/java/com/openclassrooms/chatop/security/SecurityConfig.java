@@ -32,16 +32,34 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Defines a BCrypt password encoder bean.
+     *
+     * @return PasswordEncoder instance using BCrypt hashing algorithm
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Exposes AuthenticationManager bean from AuthenticationConfiguration.
+     *
+     * @param authConfig the authentication configuration
+     * @return AuthenticationManager instance
+     * @throws Exception if unable to get AuthenticationManager
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    /**
+     * Defines an AuthenticationEntryPoint bean to handle unauthorized access attempts.
+     * Returns a 401 Unauthorized status with a JSON error message.
+     *
+     * @return AuthenticationEntryPoint for REST APIs
+     */
     @Bean
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
         return (request, response, authException) -> {
@@ -52,6 +70,11 @@ public class SecurityConfig {
         };
     }
 
+    /**
+     * Configures CORS policy allowing requests from localhost:4200 with all methods and headers.
+     *
+     * @return CorsConfigurationSource for CORS settings
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -65,6 +88,25 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Configures the HTTP security filter chain including:
+     * <ul>
+     *   <li>Enable CORS and disable CSRF</li>
+     *   <li>Set session management to stateless</li>
+     *   <li>Set authentication entry point for unauthorized requests</li>
+     *   <li>Configure endpoint authorization rules:
+     *       <ul>
+     *           <li>Allow unauthenticated access to authentication endpoints and Swagger docs</li>
+     *           <li>Protect API endpoints for rentals, messages, and users</li>
+     *       </ul>
+     *   </li>
+     *   <li>Add JWT authentication filter before UsernamePasswordAuthenticationFilter</li>
+     * </ul>
+     *
+     * @param http the HttpSecurity to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs while configuring
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -86,7 +128,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/**").authenticated()
                         .anyRequest().authenticated()
                 )
-
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
