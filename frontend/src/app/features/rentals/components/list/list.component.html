@@ -8,11 +8,11 @@
             </button>
         </mat-card-header>
         <div class="items mt2" fxLayout="row" fxLayout.lt-md="column">
-            <mat-card class="item" *ngFor="let rental of (rentals$ | async)?.rentals" fxFlex>
+            <mat-card class="item" *ngFor="let rental of (rentals$ | async)" fxFlex>
                 <mat-card-header>
                     <mat-card-title>{{ rental.name }}</mat-card-title>
                     <mat-card-subtitle>
-                        <app-owner-info [ownerId]="rental.owner_id"></app-owner-info>
+                        <app-owner-info [ownerId]="rental.ownerId"></app-owner-info>
                     </mat-card-subtitle>
                 </mat-card-header>
                 <img mat-card-image [src]="rental.picture" alt="Rental picture">
@@ -26,7 +26,7 @@
                         <mat-icon>search</mat-icon>
                         <span class="ml1">Detail</span>
                     </button>
-                    <button *ngIf="rental.owner_id === user?.id" mat-raised-button color="primary"
+                    <button *ngIf="rental.ownerId === user?.id" mat-raised-button color="primary"
                         [routerLink]="['update',rental.id]">
                         <mat-icon>edit</mat-icon>
                         <span class="ml1">Edit</span>

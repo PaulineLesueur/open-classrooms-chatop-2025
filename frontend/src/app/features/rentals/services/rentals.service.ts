@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Rental } from 'src/app/features/rentals/interfaces/rental.interface';
 import { RentalResponse } from '../interfaces/api/rentalResponse.interface';
 import { RentalsResponse } from '../interfaces/api/rentalsResponse.interface';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,12 +12,12 @@ import { RentalsResponse } from '../interfaces/api/rentalsResponse.interface';
 })
 export class RentalsService {
 
-  private pathService = 'api/rentals';
+  private pathService = `${environment.baseUrl}rentals`;
 
   constructor(private httpClient: HttpClient) { }
 
-  public all(): Observable<RentalsResponse> {
-    return this.httpClient.get<RentalsResponse>(this.pathService);
+  public all(): Observable<Rental[]> {
+    return this.httpClient.get<Rental[]>(this.pathService);
   }
 
   public detail(id: string): Observable<Rental> {
