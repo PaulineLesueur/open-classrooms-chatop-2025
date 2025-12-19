@@ -3,11 +3,13 @@ package com.openclassrooms.chatop.controller;
 import com.openclassrooms.chatop.DTO.RentalRequest;
 import com.openclassrooms.chatop.DTO.RentalResponse;
 import com.openclassrooms.chatop.service.RentalService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class RentalController {
