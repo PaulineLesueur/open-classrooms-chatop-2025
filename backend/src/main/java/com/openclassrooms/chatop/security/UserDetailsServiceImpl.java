@@ -16,6 +16,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Locates the user by their email.
+     * <p>
+     * This method is called by Spring Security during authentication.
+     * </p>
+     *
+     * @param email the email identifying the user whose data is required
+     * @return a fully populated {@link UserDetails} instance (never {@code null})
+     * @throws UsernameNotFoundException if the user could not be found or the user has no GrantedAuthority
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)

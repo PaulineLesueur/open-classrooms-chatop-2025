@@ -14,10 +14,22 @@ public class FileService {
 
     String uploadDir = "uploads/";
 
+    /**
+     * Saves the provided multipart file to the upload directory.
+     * <p>
+     * Creates the directory if it does not exist.
+     * Generates a unique filename to avoid collisions by prefixing with a UUID.
+     * Returns the saved filename.
+     * </p>
+     *
+     * @param file the multipart file to save
+     * @return the generated unique filename of the saved file
+     * @throws IOException if an error occurs during file saving
+     */
     public String save(MultipartFile file) throws IOException {
         Path folder = Paths.get(uploadDir);
 
-        if(!Files.exists(folder)) {
+        if (!Files.exists(folder)) {
             Files.createDirectories(folder);
         }
 

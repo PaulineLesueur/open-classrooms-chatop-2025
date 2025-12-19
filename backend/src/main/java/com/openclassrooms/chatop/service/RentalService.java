@@ -23,6 +23,12 @@ public class RentalService {
     @Autowired
     private UserService userService;
 
+    /**
+     * Converts a Rental entity to a RentalResponse DTO.
+     *
+     * @param rental the rental entity to convert
+     * @return the corresponding RentalResponse DTO
+     */
     private RentalResponse convertToRentalResponse(Rental rental) {
         RentalResponse dto = new RentalResponse();
 
@@ -41,6 +47,11 @@ public class RentalService {
         return dto;
     }
 
+    /**
+     * Retrieves all rentals and converts them to DTOs.
+     *
+     * @return an iterable of RentalResponse DTOs
+     */
     public Iterable<RentalResponse> getRentals() {
         Iterable<Rental> rentals = rentalRepository.findAll();
         List<RentalResponse> dtoList = StreamSupport.stream(rentals.spliterator(), false)
@@ -50,12 +61,27 @@ public class RentalService {
         return dtoList;
     }
 
+    /**
+     * Retrieves a rental by its ID.
+     *
+     * @param id the ID of the rental to retrieve
+     * @return the RentalResponse DTO for the specified rental
+     * @throws RuntimeException if no rental is found with the given ID
+     */
     public RentalResponse getRentalById(final Long id) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
         return convertToRentalResponse(rental);
     }
 
+    /**
+     * Creates a new rental using the provided request data and saves it.
+     * The picture is saved using the FileService.
+     *
+     * @param request the RentalRequest DTO containing rental details
+     * @return the created rental as a RentalResponse DTO
+     * @throws IOException if an error occurs while saving the picture
+     */
     public RentalResponse createRental(RentalRequest request) throws IOException {
         String picturePath = fileService.save(request.getPicture());
         Rental rental = new Rental();
@@ -74,6 +100,14 @@ public class RentalService {
         return convertToRentalResponse(savedRental);
     }
 
+    /**
+     * Updates an existing rental with new data.
+     *
+     * @param id the ID of the rental to update
+     * @param updatedRental the new rental data from RentalRequest DTO
+     * @return the updated rental as a RentalResponse DTO
+     * @throws RuntimeException if no rental is found with the given ID
+     */
     public RentalResponse updateRental(Long id, RentalRequest updatedRental) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));

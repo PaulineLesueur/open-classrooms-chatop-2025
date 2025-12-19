@@ -24,6 +24,14 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    /**
+     * Constructs the AuthService with required dependencies.
+     *
+     * @param userRepository        repository for user data persistence
+     * @param passwordEncoder       encoder to hash user passwords securely
+     * @param authenticationManager authentication manager to verify user credentials
+     * @param jwtService            service to generate and validate JWT tokens
+     */
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
@@ -34,6 +42,16 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Registers a new user with the provided registration data.
+     * <p>
+     * Checks if the email is already in use, hashes the password,
+     * sets creation date, and saves the user to the database.
+     * </p>
+     *
+     * @param req the registration request containing user details
+     * @throws IllegalArgumentException if the email is already registered
+     */
     public void register(RegisterRequest req) {
         if (userRepository.findByEmail(req.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already in use");
@@ -48,6 +66,17 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    /**
+     * Authenticates a user using provided login credentials.
+     * <p>
+     * On successful authentication, generates a JWT token and returns
+     * an AuthResponse containing token and user info.
+     * </p>
+     *
+     * @param req the login request containing email and password
+     * @return an AuthResponse containing JWT and user details
+     * @throws IllegalArgumentException if authentication fails (invalid credentials)
+     */
     public AuthResponse login(LoginRequest req) {
         try {
             Authentication authentication = authenticationManager.authenticate(

@@ -21,6 +21,16 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * Registers a new user.
+     *
+     * <p>
+     * Creates a new user account using the provided registration data.
+     * </p>
+     *
+     * @param req the registration request containing user information
+     * @return a success message or an error response if registration fails
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
         try {
@@ -31,6 +41,17 @@ public class AuthController {
         }
     }
 
+    /**
+     * Authenticates a user and returns a JWT token.
+     *
+     * <p>
+     * Validates user credentials and returns an authentication response
+     * containing the JWT token if successful.
+     * </p>
+     *
+     * @param req the login request containing email and password
+     * @return authentication token or 401 error if credentials are invalid
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         try {

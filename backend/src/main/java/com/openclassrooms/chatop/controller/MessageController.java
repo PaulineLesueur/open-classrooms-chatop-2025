@@ -18,6 +18,16 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    /**
+     * Creates a new message for a rental.
+     *
+     * <p>
+     * The authenticated user is automatically associated with the message.
+     * </p>
+     *
+     * @param request the message request containing the rental ID and message content
+     * @return the created message response
+     */
     @PostMapping("/api/messages")
     public MessageResponse createMessage(@RequestBody MessageRequest request) {
         return messageService.createMessage(request);

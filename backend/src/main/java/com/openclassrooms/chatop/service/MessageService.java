@@ -23,6 +23,12 @@ public class MessageService {
     @Autowired
     private UserService userService;
 
+    /**
+     * Converts a Message entity to a MessageResponse DTO.
+     *
+     * @param message the Message entity to convert
+     * @return the corresponding MessageResponse DTO
+     */
     private MessageResponse convertToMessageResponse(Message message) {
         MessageResponse dto = new MessageResponse();
         dto.setId(message.getId());
@@ -34,6 +40,13 @@ public class MessageService {
         return dto;
     }
 
+    /**
+     * Creates a new message associated with a rental and the currently authenticated user.
+     *
+     * @param request the message request DTO containing rental ID and message text
+     * @return the saved message as a MessageResponse DTO
+     * @throws RuntimeException if the rental specified in the request does not exist
+     */
     public MessageResponse createMessage(MessageRequest request) {
         Message message = new Message();
         User user = userService.getCurrentUser();
