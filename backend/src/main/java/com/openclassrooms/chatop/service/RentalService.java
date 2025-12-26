@@ -6,6 +6,7 @@ import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.model.User;
 import com.openclassrooms.chatop.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +24,9 @@ public class RentalService {
     @Autowired
     private UserService userService;
 
+    @Value("${environement.url}")
+    private String environement;
+
     /**
      * Converts a Rental entity to a RentalResponse DTO.
      *
@@ -36,7 +40,7 @@ public class RentalService {
         dto.setName(rental.getName());
         dto.setSurface(rental.getSurface());
         dto.setPrice(rental.getPrice());
-        dto.setPicture("http://localhost:3001/uploads/" + rental.getPicture());
+        dto.setPicture(environement + "uploads/" + rental.getPicture());
         dto.setDescription(rental.getDescription());
         if(rental.getOwner() != null) {
             dto.setOwnerId(rental.getOwner().getId());
